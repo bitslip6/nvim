@@ -1,3 +1,9 @@
-basic setup:
+your basic NEOVIM setup,
 
-store global vim options (tabstop, shift width, leader key, etc) in config/options.lua
+color scheme selection <leader>cs
+
+copy paste: <leader>y - yank to your LOCAL clipboard
+copy paste: <leader>ya - yank entire buffer to your LOCAL clipboard
+copy paste: <leader>p - yank to paste from your LOCAL clipboard
+
+
