@@ -1,7 +1,12 @@
 return {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' },
---[[
+    dependencies = { 'nvim-lua/plenary.nvim',
+        {
+          "nvim-telescope/telescope-fzf-native.nvim",
+          build = "make",                       -- builds the native sorter
+          cond = function() return vim.fn.executable("make") == 1 end,
+        },
+    },
     config = function()
         require('telescope').setup {
             pickers = {
@@ -18,6 +23,5 @@ return {
 
         vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
     end
-]]
 }
 

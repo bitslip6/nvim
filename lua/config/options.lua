@@ -10,3 +10,6 @@ vim.opt.shiftwidth = 4     -- spaces per indentation level
 vim.opt.expandtab = true   -- use spaces instead of tabs
 vim.opt.smartindent = true -- auto-indent new lines
 
+-- :setlocal spell spelllang=en_us
+
+vim.opt.number = true

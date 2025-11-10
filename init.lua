@@ -21,6 +21,7 @@ require("plugins.telescope")
 -- LSP setup :)
 require("lsp.clangd")
 require("config.clangd")
-
+require("lsp.gopls")
+require("config.gopls")
 --[[
 ]]

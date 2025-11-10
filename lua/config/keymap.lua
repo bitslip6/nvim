@@ -37,6 +37,7 @@ vim.keymap.set('n', '<leader>gB', ":Neogit rebase kind=vsplit<CR>", { desc = "re
 vim.keymap.set("n", "<leader>gf", ":DiffviewOpen<CR>", { desc = "Open Diffview" })
 vim.keymap.set("n", "<leader>gh", ":DiffviewFileHistory %<CR>", { desc = "File history" })
 
+vim.keymap.set("n", "<leader>sc", ":set spell!", { desc = "Spell Check Toggle" })
 -- general progrmaming keybindings
 --
 local opts = { noremap=true, silent=true }
@@ -78,6 +79,8 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live gr
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
+-- toggle spelling
+vim.keymap.set('n', '<leader>sc', ':set invspell', { desc = 'Spell check toggle' })
 
 -- neo tree
 vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', { desc = 'NeoTree toggle open' })
