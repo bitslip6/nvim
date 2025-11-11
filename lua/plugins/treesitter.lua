@@ -1,4 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  opts = { ensure_installed = { "cpp", "go", "gomod", "gowork", "gosum" } },
+  build = ":TSUpdate",
+  opts = { 
+      ensure_installed = { "cpp", "go", "gomod", "gowork", "gosum", "c", "lua" }
+  },
 }
