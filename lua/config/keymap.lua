@@ -20,8 +20,6 @@ vim.keymap.set('n', '<A-Right>', '<Cmd>vertical resize +2<CR>', { desc = 'Expand
 vim.keymap.set('n', '<A-Up>',    '<Cmd>resize +2<CR>', { desc = 'Increase height' })
 vim.keymap.set('n', '<A-Down>',  '<Cmd>resize -2<CR>', { desc = 'Decrease height' })
 
-vim.keymap.set('n', '<leader>gd',  vim.lsp.buf.implementation, { desc = 'Goto implementation' })
-
 
 -- reload this neovim config file
 vim.keymap.set('n', '<leader>rr', ":luafile ~/.config/nvim/init.lua<CR>", { desc = "Reload init.lua" })
@@ -37,10 +35,10 @@ vim.keymap.set('n', '<leader>gB', ":Neogit rebase kind=vsplit<CR>", { desc = "re
 vim.keymap.set("n", "<leader>gf", ":DiffviewOpen<CR>", { desc = "Open Diffview" })
 vim.keymap.set("n", "<leader>gh", ":DiffviewFileHistory %<CR>", { desc = "File history" })
 
-vim.keymap.set("n", "<leader>sc", ":set spell!", { desc = "Spell Check Toggle" })
+vim.keymap.set("n", "<leader>sc", ":set spell!<CR>", { desc = "Spell Check Toggle" })
 -- general progrmaming keybindings
 --
-local opts = { noremap=true, silent=true }
+-- local opts = { noremap=true, silent=true }
 
 -- LSP navigation
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -84,3 +82,17 @@ vim.keymap.set('n', '<leader>sc', ':set invspell', { desc = 'Spell check toggle'
 
 -- neo tree
 vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', { desc = 'NeoTree toggle open' })
+
+
+-- snippets keybindings
+local ls = require("luasnip")
+
+vim.keymap.set({"i"}, "<Tab>", function() ls.expand() end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-l>", function() ls.jump( 1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-j>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-e>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, {silent = true})

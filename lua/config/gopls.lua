@@ -1,40 +1,53 @@
--- Minimal native LSP setup for clangd, Neovim 0.11+
+-- lua/config/gopls.lua
 
--- 0) optional, helpful while debugging
--- vim.lsp.set_log_level("warn")  -- or "debug"
+-- optional logging while debugging
+-- vim.lsp.set_log_level("warn") -- or "debug"
 
--- 2) minimal server config
-vim.lsp.config("gopls", {
-  cmd = { "/home/cory/go/bin/gopls"},
-  filetypes = { "go" },
-  root_markers = { '.git' },
-
-  single_file_support = true,
---[[
-  capabilities = { offsetEncoding = { "utf-16" } },  -- clangd expects UTF-16
-  on_attach = function(client, bufnr)
-    -- minimal keys
-    local map = function(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc }) end
-    map("gd", vim.lsp.buf.definition, "goto definition")
-    map("gi", vim.lsp.buf.implementation, "goto implementation")
-    map("gr", vim.lsp.buf.references, "references")
-    map("K",  vim.lsp.buf.hover, "hover")
-  end,
-]]
-})
-
--- 3) enable it
-vim.lsp.enable("gopls")
-
--- 4) ensure it starts on C-like buffers too
+-- start gopls when a Go file opens
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-  pattern = { "*.go" },
+  pattern = { "*.go", "go.mod", "go.work" },
   callback = function(args)
-    vim.lsp.enable("gopls", { bufnr = args.buf })
+    -- find project root: go.work, go.mod, or .git
+    local fname = vim.api.nvim_buf_get_name(args.buf)
+    local marker = vim.fs.find({ "go.work", "go.mod", ".git" }, { path = fname, upward = true })[1]
+    local root_dir = marker and vim.fs.dirname(marker) or vim.fn.getcwd()
+
+    -- avoid starting duplicates for the same root
+    for _, c in ipairs(vim.lsp.get_clients({ name = "gopls" })) do
+      if c.config and c.config.root_dir == root_dir then
+        return
+      end
+    end
+
+    vim.lsp.start({
+      name = "gopls",
+      cmd = { "/home/cory/go/bin/gopls" }, -- ensure this exists
+      root_dir = root_dir,
+      filetypes = { "go", "gomod", "gotmpl" },
+      single_file_support = true,
+      settings = {
+        gopls = {
+          gofumpt = true,
+          staticcheck = true,
+          -- you can add your other settings back here later
+        },
+      },
+    })
   end,
 })
 
--- 5) optional, calmer diagnostics
+-- minimal LSP keymaps for testing
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local opts = { buffer = ev.buf, silent = true }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "K",  vim.lsp.buf.hover, opts)
+  end,
+})
+
+-- calmer diagnostics
 vim.diagnostic.config({
   virtual_text = true,
   signs = true,
