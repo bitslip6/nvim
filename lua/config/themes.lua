@@ -4,6 +4,7 @@ local colorschemes = {
   "gruvbox",
   "catppuccin",
   "kanagawa",
+  "cyberdream",
   "nightfox",
 }
 
