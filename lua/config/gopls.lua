@@ -56,3 +56,7 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
+
+-- enable inline code hints...
+vim.lsp.inlay_hint.enable(true)
+

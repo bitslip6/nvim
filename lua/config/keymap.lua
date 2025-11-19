@@ -83,6 +83,18 @@ vim.keymap.set('n', '<leader>sc', ':set invspell', { desc = 'Spell check toggle'
 -- neo tree
 vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', { desc = 'NeoTree toggle open' })
 
+-- aerial symbol navigation
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
 
 -- snippets keybindings
 local ls = require("luasnip")
@@ -96,3 +108,7 @@ vim.keymap.set({"i", "s"}, "<C-e>", function()
 		ls.change_choice(1)
 	end
 end, {silent = true})
+
+
+-- csv view keybindings
+vim.keymap.set('n', '<leader>tc', ':CsvViewToggle<CR>', { desc = 'CSVView toggle open' })
